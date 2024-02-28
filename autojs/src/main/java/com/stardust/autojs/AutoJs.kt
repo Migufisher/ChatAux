@@ -11,7 +11,7 @@ import com.stardust.autojs.core.console.ConsoleImpl
 import com.stardust.autojs.core.console.GlobalConsole
 import com.stardust.autojs.core.image.capture.ScreenCaptureManager
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester
-import com.stardust.autojs.core.record.accessibility.AccessibilityActionRecorder
+//import com.stardust.autojs.core.record.accessibility.AccessibilityActionRecorder
 import com.stardust.autojs.core.util.Shell
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine
 import com.stardust.autojs.engine.RootAutomatorEngine
@@ -40,7 +40,7 @@ import java.io.File
  */
 abstract class AutoJs protected constructor(protected val application: Application) {
     private val mContext: Context = application.applicationContext
-    private val accessibilityActionRecorder = AccessibilityActionRecorder()
+//    private val accessibilityActionRecorder = AccessibilityActionRecorder()
     private val mNotificationObserver: AccessibilityNotificationObserver =
         AccessibilityNotificationObserver(mContext)
     private val mScreenCaptureRequester: ScreenCaptureRequester = ScreenCaptureManager()
@@ -146,7 +146,7 @@ abstract class AutoJs protected constructor(protected val application: Applicati
     private fun addAccessibilityServiceDelegates() {
         addDelegate(100, infoProvider)
         addDelegate(200, mNotificationObserver)
-        addDelegate(300, accessibilityActionRecorder)
+//        addDelegate(300, accessibilityActionRecorder)
     }
 
     abstract fun waitForAccessibilityServiceEnabled()

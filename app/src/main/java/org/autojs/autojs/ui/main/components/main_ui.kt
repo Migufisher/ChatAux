@@ -1,5 +1,6 @@
 package org.autojs.autojs.ui.main.components
 
+import androidx.compose.material.Button
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable

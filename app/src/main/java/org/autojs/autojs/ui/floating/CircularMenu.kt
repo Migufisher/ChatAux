@@ -13,9 +13,9 @@ import butterknife.Optional
 import com.afollestad.materialdialogs.MaterialDialog
 import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
-import com.stardust.autojs.core.record.Recorder
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
+import com.stardust.toast
 import com.stardust.util.ClipboardUtil
 import com.stardust.view.accessibility.AccessibilityService.Companion.instance
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
@@ -23,14 +23,12 @@ import com.stardust.view.accessibility.NodeInfo
 import org.autojs.autojs.Pref
 import org.autojs.autoxjs.R
 import org.autojs.autojs.autojs.AutoJs
-import org.autojs.autojs.autojs.record.GlobalActionRecorder
 import org.autojs.autojs.model.explorer.ExplorerDirPage
 import org.autojs.autojs.model.explorer.Explorers
 import org.autojs.autojs.model.script.Scripts.run
 import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder
 import org.autojs.autojs.tool.AccessibilityServiceTool
 import org.autojs.autojs.tool.RootTool
-import org.autojs.autojs.ui.common.NotAskAgainDialog
 import org.autojs.autojs.ui.common.OperationDialogBuilder
 import org.autojs.autojs.ui.explorer.ExplorerViewKt
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutBoundsFloatyWindow
@@ -44,14 +42,12 @@ import org.jdeferred.impl.DeferredObject
  * Created by Stardust on 2017/10/18.
  */
 @SuppressLint("NonConstantResourceId")
-class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, CaptureAvailableListener {
+class CircularMenu(context: Context?) : CaptureAvailableListener {
     class StateChangeEvent(val currentState: Int, val previousState: Int)
-
     private var mWindow: CircularMenuWindow? = null
     private var mState = 0
     private var mActionViewIcon: RoundedImageView? = null
     private val mContext: Context
-    private val mRecorder: GlobalActionRecorder
     private var mSettingsDialog: MaterialDialog? = null
     private var mLayoutInspectDialog: MaterialDialog? = null
     private var mRunningPackage: String? = null
@@ -59,9 +55,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private var mCaptureDeferred: Deferred<NodeInfo?, Void, Void>? = null
     private fun setupListeners() {
         mWindow?.setOnActionViewClickListener {
-            if (mState == STATE_RECORDING) {
-                stopRecord()
-            } else if (mWindow?.isExpanded == true) {
+            if (mWindow?.isExpanded == true) {
                 mWindow?.collapse()
             } else {
                 mCaptureDeferred = DeferredObject()
@@ -127,35 +121,8 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     @OnClick(R.id.record)
     fun startRecord() {
         mWindow?.collapse()
-        if (!RootTool.isRootAvailable()) {
-            DialogUtils.showDialog(NotAskAgainDialog.Builder(mContext, "CircularMenu.root")
-                .title(R.string.text_device_not_rooted)
-                .content(R.string.prompt_device_not_rooted)
-                .neutralText(R.string.text_device_rooted)
-                .positiveText(R.string.ok)
-                .onNeutral { _, _ -> mRecorder.start() }
-                .build())
-        } else {
-            mRecorder.start()
-        }
-    }
-
-    private fun setState(state: Int) {
-        val previousState = mState
-        mState = state
-        mActionViewIcon?.setImageResource(if (mState == STATE_RECORDING) R.drawable.ic_ali_record else IC_ACTION_VIEW)
-        //  mActionViewIcon.setBackgroundColor(mState == STATE_RECORDING ? mContext.getResources().getColor(R.color.color_red) :
-        //        Color.WHITE);
-        mActionViewIcon?.setBackgroundResource(if (mState == STATE_RECORDING) R.drawable.circle_red else R.drawable.circle_white)
-        val padding =
-            mContext.resources.getDimension(if (mState == STATE_RECORDING) R.dimen.padding_circular_menu_recording else R.dimen.padding_circular_menu_normal)
-                .toInt()
-        mActionViewIcon?.setPadding(padding, padding, padding, padding)
-        EventBus.getDefault().post(StateChangeEvent(mState, previousState))
-    }
-
-    private fun stopRecord() {
-        mRecorder.stop()
+        //添加處理事件
+        toast(mContext,"HelloRecord",true)
     }
 
     @Optional
@@ -328,20 +295,9 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             EventBus.getDefault().post(StateChangeEvent(STATE_CLOSED, mState))
             mState = STATE_CLOSED
         }
-        mRecorder.removeOnStateChangedListener(this)
+//        mRecorder.removeOnStateChangedListener(this)
         AutoJs.getInstance().layoutInspector.removeCaptureAvailableListener(this)
     }
-
-    override fun onStart() {
-        setState(STATE_RECORDING)
-    }
-
-    override fun onStop() {
-        setState(STATE_NORMAL)
-    }
-
-    override fun onPause() {}
-    override fun onResume() {}
 
     companion object {
         const val STATE_CLOSED = -1
@@ -354,8 +310,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         mContext = ContextThemeWrapper(context, R.style.AppTheme)
         initFloaty()
         setupListeners()
-        mRecorder = GlobalActionRecorder.getSingleton(context)
-        mRecorder.addOnStateChangedListener(this)
         AutoJs.getInstance().layoutInspector.addCaptureAvailableListener(this)
     }
 }
