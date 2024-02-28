@@ -37,7 +37,6 @@ import org.autojs.autojs.model.explorer.Explorers;
 import org.autojs.autojs.model.script.ScriptFile;
 import org.autojs.autojs.model.script.Scripts;
 import org.autojs.autojs.tool.Observers;
-import org.autojs.autojs.ui.build.BuildActivity;
 import org.autojs.autojs.ui.common.ScriptLoopDialog;
 import org.autojs.autojs.ui.common.ScriptOperations;
 import org.autojs.autojs.ui.viewmodel.ExplorerItemList;
@@ -350,10 +349,6 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
             case R.id.timed_task:
                 new ScriptOperations(getContext(), this, getCurrentPage())
                         .timedTask(mSelectedItem.toScriptFile());
-                notifyOperated();
-                break;
-            case R.id.action_build_apk:
-                BuildActivity.Companion.start(getContext(),mSelectedItem.getPath());
                 notifyOperated();
                 break;
             case R.id.action_sort_by_date:

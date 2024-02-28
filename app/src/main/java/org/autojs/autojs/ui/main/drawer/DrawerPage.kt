@@ -53,7 +53,6 @@ import org.autojs.autojs.devplugin.DevPlugin
 import org.autojs.autojs.external.foreground.ForegroundService
 import org.autojs.autojs.tool.AccessibilityServiceTool
 import org.autojs.autojs.tool.WifiTool
-import org.autojs.autojs.ui.build.MyTextField
 import org.autojs.autojs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autojs.ui.compose.widget.MyAlertDialog1
 import org.autojs.autojs.ui.compose.widget.MyIcon
@@ -445,14 +444,6 @@ private fun ConnectComputerDialog(
         Surface(shape = RoundedCornerShape(4.dp)) {
             Column(Modifier.padding(16.dp)) {
                 Text(text = stringResource(id = R.string.text_server_address))
-                MyTextField(
-                    value = host,
-                    onValueChange = { host = it },
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    placeholder = {
-                        Text(text = host)
-                    }
-                )
                 Row(Modifier.fillMaxWidth()) {
                     TextButton(
                         onClick = {

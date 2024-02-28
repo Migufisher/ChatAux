@@ -37,6 +37,13 @@ import org.autojs.autojs.ui.main.MainActivity
 import org.greenrobot.eventbus.EventBus
 import org.jdeferred.Deferred
 import org.jdeferred.impl.DeferredObject
+import com.stardust.autojs.core.accessibility.UiSelector
+import com.stardust.autojs.runtime.api.Device
+import com.stardust.automator.UiGlobalSelector
+import com.stardust.automator.UiObject
+import com.stardust.automator.UiObjectCollection
+import com.stardust.autojs.runtime.ScriptRuntime
+import com.stardust.autojs.runtime.api.Device.device
 
 /**
  * Created by Stardust on 2017/10/18.
@@ -123,6 +130,7 @@ class CircularMenu(context: Context?) : CaptureAvailableListener {
         mWindow?.collapse()
         //添加處理事件
         toast(mContext,"HelloRecord",true)
+
     }
 
     @Optional

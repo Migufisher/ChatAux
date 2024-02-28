@@ -21,7 +21,6 @@ import org.autojs.autojs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autojs.ui.common.NotAskAgainDialog;
 import org.autojs.autojs.ui.edit.editor.CodeEditor;
 import org.autojs.autojs.ui.log.LogActivityKt;
-import org.autojs.autojs.ui.build.BuildActivity;
 
 import java.util.Locale;
 
@@ -132,9 +131,9 @@ public class EditorMenu {
             case R.id.action_info:
                 showInfo();
                 return true;
-            case R.id.action_build_apk:
-                startBuildApkActivity();
-                return true;
+//            case R.id.action_build_apk:
+//                startBuildApkActivity();
+//                return true;
 
         }
         return false;
@@ -185,11 +184,6 @@ public class EditorMenu {
                 .onAny((ignored, which) -> dialog.dismiss())
                 .show();
     }
-
-    private void startBuildApkActivity() {
-        BuildActivity.Companion.start(mContext,mEditorView.getUri().getPath());
-    }
-
 
     private boolean onEditOptionsSelected(MenuItem item) {
         switch (item.getItemId()) {

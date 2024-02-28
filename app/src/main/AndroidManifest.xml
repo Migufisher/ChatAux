@@ -461,11 +461,6 @@
             android:name="org.autojs.autojs.ui.user.RegisterActivity_"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name="org.autojs.autojs.ui.user.WebActivity_" />
-        <activity
-            android:name="org.autojs.autojs.ui.build.BuildActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity android:name="org.autojs.autojs.ui.build.SignManageActivityKt" />
-        <activity android:name="org.autojs.autojs.ui.build.ProjectConfigActivity_" />
         <activity android:name="org.autojs.autojs.ui.log.LogActivityKt" />
         <activity android:name="org.autojs.autojs.ui.shortcut.ShortcutIconSelectActivity_" />
         <activity android:name="org.autojs.autojs.ui.timing.TimedTaskSettingActivity_" />

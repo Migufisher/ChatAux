@@ -265,7 +265,6 @@ dependencies {
     implementation("com.evernote:android-job:1.4.2")
     // Optional, if you use support library fragments:
     implementation(project(":autojs"))
-    implementation(project(":apkbuilder"))
     implementation("androidx.multidex:multidex:2.0.1")
 
     val lifecycle_version = "2.5.1"
@@ -293,6 +292,8 @@ dependencies {
     implementation("io.noties.markwon:core:4.6.2")
     implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
+
+    api(libs.commons.io)
 }
 
 fun copyTemplateToAPP(isDebug: Boolean, to: File) {

@@ -37,8 +37,6 @@ import org.autojs.autojs.external.fileprovider.AppFileProvider
 import org.autojs.autojs.model.explorer.ExplorerDirPage
 import org.autojs.autojs.model.explorer.Explorers
 import org.autojs.autojs.model.script.Scripts.edit
-import org.autojs.autojs.ui.build.ProjectConfigActivity
-import org.autojs.autojs.ui.build.ProjectConfigActivity_
 import org.autojs.autojs.ui.common.ScriptOperations
 import org.autojs.autojs.ui.explorer.ExplorerViewKt
 import org.autojs.autojs.ui.main.rememberExternalStoragePermissionsState
@@ -134,13 +132,6 @@ class ScriptListFragment : Fragment() {
         FabWithLabel(
             onClick = {
                 val explorerView = this@ScriptListFragment.explorerView
-                ProjectConfigActivity_.intent(context)
-                    .extra(
-                        ProjectConfigActivity.EXTRA_PARENT_DIRECTORY,
-                        explorerView.currentPage?.path
-                    )
-                    .extra(ProjectConfigActivity.EXTRA_NEW_PROJECT, true)
-                    .start()
             },
             labelContent = { Text(text = stringResource(id = R.string.text_project)) },
         ) {

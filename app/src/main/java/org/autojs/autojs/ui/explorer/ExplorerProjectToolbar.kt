@@ -20,9 +20,6 @@ import kotlinx.coroutines.withContext
 import org.autojs.autojs.autojs.AutoJs
 import org.autojs.autojs.model.explorer.ExplorerChangeEvent
 import org.autojs.autojs.model.explorer.Explorers
-import org.autojs.autojs.ui.build.BuildActivity.Companion.start
-import org.autojs.autojs.ui.build.ProjectConfigActivity
-import org.autojs.autojs.ui.build.ProjectConfigActivity_
 import org.autojs.autoxjs.R
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
@@ -91,7 +88,7 @@ class ExplorerProjectToolbar : CardView {
 
     @OnClick(R.id.build)
     fun build() {
-        start(context, mDirectory!!.path)
+//        start(context, mDirectory!!.path)
     }
 
     @OnClick(R.id.sync)
@@ -122,8 +119,8 @@ class ExplorerProjectToolbar : CardView {
     }
 
     fun edit() {
-        ProjectConfigActivity_.intent(context)
-            .extra(ProjectConfigActivity.EXTRA_DIRECTORY, mDirectory!!.path)
-            .start()
+//        ProjectConfigActivity_.intent(context)
+//            .extra(ProjectConfigActivity.EXTRA_DIRECTORY, mDirectory!!.path)
+//            .start()
     }
 }
