@@ -11,7 +11,7 @@ class ViewPager2Adapter(
     fragmentActivity: FragmentActivity,
     private val scriptListFragment: ScriptListFragment,
     private val taskManagerFragment: TaskManagerFragmentKt,
-    private val webViewFragment: EditorAppManager
+//    private val webViewFragment: EditorAppManager
 ) : FragmentStateAdapter(fragmentActivity) {
 
     override fun createFragment(position: Int): Fragment {
@@ -19,17 +19,22 @@ class ViewPager2Adapter(
             0 -> {
                 scriptListFragment
             }
-            1 -> {
+            else ->{
                 taskManagerFragment
             }
-            else -> {
-                webViewFragment
-            }
+//            1 -> {
+//                taskManagerFragment
+//            }
+//            else -> {
+////                webViewFragment
+//            }
         }
         return fragment
     }
 
     override fun getItemCount(): Int {
-        return 3
+//        return 3
+        return 2
     }
+
 }

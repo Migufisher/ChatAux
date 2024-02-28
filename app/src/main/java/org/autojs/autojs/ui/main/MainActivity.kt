@@ -97,7 +97,7 @@ class MainActivity : FragmentActivity() {
                         activity = this,
                         scriptListFragment = scriptListFragment,
                         taskManagerFragment = taskManagerFragment,
-                        webViewFragment = webViewFragment,
+//                        webViewFragment = webViewFragment,
                         onDrawerState = {
                             this.drawerState = it
                         },
@@ -143,7 +143,7 @@ fun MainPage(
     activity: FragmentActivity,
     scriptListFragment: ScriptListFragment,
     taskManagerFragment: TaskManagerFragmentKt,
-    webViewFragment: EditorAppManager,
+//    webViewFragment: EditorAppManager,
     onDrawerState: (DrawerState) -> Unit,
     viewPager: ViewPager2
 ) {
@@ -182,7 +182,7 @@ fun MainPage(
                             scriptListFragment.explorerView.setFilter { it.name.contains(keyword) }
                         },
                         scriptListFragment = scriptListFragment,
-                        webViewFragment = webViewFragment
+//                        webViewFragment = webViewFragment
                     )
                 }
             }
@@ -211,8 +211,8 @@ fun MainPage(
                     adapter = ViewPager2Adapter(
                         activity,
                         scriptListFragment,
-                        taskManagerFragment,
-                        webViewFragment
+                        taskManagerFragment
+//                        ,webViewFragment
                     )
                     isUserInputEnabled = false
                     ViewCompat.setNestedScrollingEnabled(this, true)
@@ -274,11 +274,12 @@ private fun getBottomItems(context: Context) = mutableStateListOf(
     BottomNavigationItem(
         R.drawable.ic_manage,
         context.getString(R.string.text_management)
-    ),
-    BottomNavigationItem(
-        R.drawable.ic_web,
-        context.getString(R.string.text_document)
     )
+//    ,
+//    BottomNavigationItem(
+//        R.drawable.ic_web,
+//        context.getString(R.string.text_document)
+//    )
 )
 
 @Composable
@@ -319,7 +320,7 @@ private fun TopBar(
     requestOpenDrawer: () -> Unit,
     onSearch: (String) -> Unit,
     scriptListFragment: ScriptListFragment,
-    webViewFragment: EditorAppManager,
+//    webViewFragment: EditorAppManager,
 ) {
     var isSearch by remember {
         mutableStateOf(false)
@@ -421,10 +422,10 @@ private fun TopBar(
                         )
                     }
                 }
-
-                2 -> {
-                    DocumentPageMenuButton { webViewFragment.swipeRefreshWebView.webView }
-                }
+//
+//                2 -> {
+////                    DocumentPageMenuButton { webViewFragment.swipeRefreshWebView.webView }
+//                }
             }
 
         }
