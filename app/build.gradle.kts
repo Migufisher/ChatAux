@@ -173,8 +173,6 @@ dependencies {
 
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation(libs.androidx.webkit)
-
     implementation(libs.bundles.accompanist)
 
     implementation(libs.compose.ui)

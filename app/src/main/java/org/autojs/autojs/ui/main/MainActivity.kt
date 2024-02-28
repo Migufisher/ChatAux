@@ -43,12 +43,12 @@ import org.autojs.autojs.ui.compose.widget.MyIcon
 import org.autojs.autojs.ui.compose.widget.SearchBox2
 import org.autojs.autojs.ui.explorer.ExplorerViewKt
 import org.autojs.autojs.ui.floating.FloatyWindowManger
-import org.autojs.autojs.ui.main.components.DocumentPageMenuButton
+//import org.autojs.autojs.ui.main.components.DocumentPageMenuButton
 import org.autojs.autojs.ui.main.components.LogButton
 import org.autojs.autojs.ui.main.drawer.DrawerPage
 import org.autojs.autojs.ui.main.scripts.ScriptListFragment
 import org.autojs.autojs.ui.main.task.TaskManagerFragmentKt
-import org.autojs.autojs.ui.main.web.EditorAppManager
+//import org.autojs.autojs.ui.main.web.EditorAppManager
 import org.autojs.autojs.ui.widget.fillMaxSize
 import org.autojs.autoxjs.R
 
@@ -63,7 +63,7 @@ class MainActivity : FragmentActivity() {
 
     private val scriptListFragment by lazy { ScriptListFragment() }
     private val taskManagerFragment by lazy { TaskManagerFragmentKt() }
-    private val webViewFragment by lazy { EditorAppManager() }
+//    private val webViewFragment by lazy { EditorAppManager() }
     private var lastBackPressedTime = 0L
     private var drawerState: DrawerState? = null
     private val viewPager: ViewPager2 by lazy { ViewPager2(this) }
