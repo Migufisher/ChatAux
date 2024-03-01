@@ -1,27 +1,45 @@
 package org.autojs.autojs.ui.floating
 
+import android.accessibilityservice.AccessibilityService
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.text.TextUtils
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Optional
 import com.afollestad.materialdialogs.MaterialDialog
 import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
+import com.stardust.autojs.core.image.ImageWrapper
+import com.stardust.autojs.core.image.capture.ScreenCaptureManager
+import com.stardust.autojs.core.image.capture.ScreenCaptureRequester
+import com.stardust.autojs.runtime.ScriptRuntime
+import com.stardust.autojs.runtime.api.Images
+import com.stardust.automator.UiGlobalSelector
+import com.stardust.automator.UiObject
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.toast
 import com.stardust.util.ClipboardUtil
+import com.stardust.view.accessibility.AccessibilityNodeInfoAllocator
 import com.stardust.view.accessibility.AccessibilityService.Companion.instance
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
 import com.stardust.view.accessibility.NodeInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.autojs.autojs.Pref
-import org.autojs.autoxjs.R
 import org.autojs.autojs.autojs.AutoJs
 import org.autojs.autojs.model.explorer.ExplorerDirPage
 import org.autojs.autojs.model.explorer.Explorers
@@ -34,16 +52,10 @@ import org.autojs.autojs.ui.explorer.ExplorerViewKt
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutBoundsFloatyWindow
 import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow
 import org.autojs.autojs.ui.main.MainActivity
+import org.autojs.autoxjs.R
 import org.greenrobot.eventbus.EventBus
 import org.jdeferred.Deferred
 import org.jdeferred.impl.DeferredObject
-import com.stardust.autojs.core.accessibility.UiSelector
-import com.stardust.autojs.runtime.api.Device
-import com.stardust.automator.UiGlobalSelector
-import com.stardust.automator.UiObject
-import com.stardust.automator.UiObjectCollection
-import com.stardust.autojs.runtime.ScriptRuntime
-import com.stardust.autojs.runtime.api.Device.device
 
 /**
  * Created by Stardust on 2017/10/18.
@@ -124,15 +136,105 @@ class CircularMenu(context: Context?) : CaptureAvailableListener {
         DialogUtils.showDialog(dialog)
     }
 
+    suspend fun requestScreenCapture(): Boolean  {
+        //首先判断是否有截图权限
+        checkNotNull(mScreenCaptureRequester.screenCapture){
+            //没有截图权限 进行截图权限申请
+            // runCatching:此方法用来对块内执行内容的异常进行捕获，并返回块内函数是否执行成功
+            if(runCatching { mScreenCaptureRequester.requestScreenCapture(mContext,1) }.isSuccess){
+                toast(mContext,"获取截图权限",false)
+                return true
+            }else{
+                toast(mContext,"获取截图权限失败",false)
+                return false
+            }
+        }
+        return true
+    }
+
+    @Synchronized
+    fun captureScreen(): ImageWrapper {
+        val screenCapture = mScreenCaptureRequester.screenCapture
+        checkNotNull(screenCapture) { SecurityException("No screen capture permission") }
+        return runBlocking {
+            screenCapture.captureImageWrapper()
+        }
+    }
+    //此对象程序运行时，只申请一次  重复定义会报错
+    val mScreenCaptureRequester: ScreenCaptureRequester = ScreenCaptureManager()
+    @RequiresApi(Build.VERSION_CODES.R)
     @Optional
     @OnClick(R.id.record)
     fun startRecord() {
         mWindow?.collapse()
         //添加處理事件
-        toast(mContext,"HelloRecord",true)
+        toast(mContext,"HelloRecord",false)
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        scope.launch {
 
+            if(requestScreenCapture()){
+                toast(mContext,"获取截图权限",false)
+                //申请截图
+                var timage = mScreenCaptureRequester.screenCapture?.captureImageWrapper()
+            }else{
+                toast(mContext,"获取截图权限失败",false)
+            }
+        }
+
+//        val temp = UiObject("",allocator = AccessibilityNodeInfoAllocator(),0,-1)
+//        val ts = UiGlobalSelector().id("org.autojs.autoxjs:id/more")
+//         temp.findOne(ts)
+//        var temp = ""
+//        //Device调用方式 两种 一种是直接调用，一种是实例化后再调用
+//        val device = Device(mContext)
+//        temp = Device(mContext).androidId
+//        temp = device.androidId
+//
+//        val scope = CoroutineScope(Job() + Dispatchers.Main)
+//        scope.launch {
+//            delay(2999L)
+//            var tempkn = device.brightness
+//            toast(mContext,tempkn.toString(),false)
+//            scope.cancel()
+//        }
+        //权限类操作 要向系统提交申请 申请方为本应用程序，申请完后，也只有本应用程序的一部分可以使用
+        //Contex代表的就是本程序 一个对象 或一个页面
+
+
+
+//        val scope = CoroutineScope(Job() + Dispatchers.Main)
+//        scope.launch {
+//
+//            //判断是否有截图权限
+//            var reslutCheck = checkNotNull(mScreenCaptureRequester.screenCapture){
+//                //如何为空则代表没有截图权限 向系统申请
+//                // 1 代表紧坚型截屏
+//                var tempa = mScreenCaptureRequester.requestScreenCapture(mContext,1)
+//                var pass =""
+//                checkNotNull(mScreenCaptureRequester.screenCapture){
+//                    //取消了权限申请
+//                    toast(mContext,"您取消了截图权限申请",false)
+//                    return@launch
+//                }
+//                toast(mContext,"截图权限授权成功!",false)
+//                return@launch
+//            }
+//
+//
+//            //申请截图
+//            var timage = mScreenCaptureRequester.screenCapture?.captureImageWrapper()
+//            toast(mContext,"截图完成",false)
+
+            //判断是否拥有截图权限
+//            val screenCapture = mScreenCaptureRequester.screenCapture
+//            checkNotNull(screenCapture) {
+//                toast(mContext,"没有截图权限",false)
+//                return@launch
+//            }
+//            var temp = screenCapture.captureImageWrapper()
+
+//        }
     }
-
     @Optional
     @OnClick(R.id.layout_inspect)
     fun inspectLayout() {

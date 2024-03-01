@@ -293,7 +293,9 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.1.0-beta01")
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
+    //新添加
     api(libs.commons.io)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
 }
 
 fun copyTemplateToAPP(isDebug: Boolean, to: File) {

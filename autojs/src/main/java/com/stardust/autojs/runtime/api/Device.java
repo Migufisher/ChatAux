@@ -94,7 +94,7 @@ public class Device {
     @SuppressLint("HardwareIds")
     public static final String serial = Build.SERIAL;
 
-    private Context mContext;
+    private final Context mContext;
     private PowerManager.WakeLock mWakeLock;
     private int mWakeLockFlag;
 
