@@ -1,5 +1,5 @@
 
-include ':app', ':automator', ':common', ':autojs', ':inrt'
+include ':app', ':automator', ':common', ':autojs'
 include ':LocalRepo:libtermexec'
 include ':LocalRepo:emulatorview'
 include ':LocalRepo:term'

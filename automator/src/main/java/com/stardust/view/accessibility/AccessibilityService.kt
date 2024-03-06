@@ -91,7 +91,6 @@ open class AccessibilityService : android.accessibilityservice.AccessibilityServ
         } catch (e: Exception) {
             null
         }
-
     }
 
     override fun onDestroy() {
